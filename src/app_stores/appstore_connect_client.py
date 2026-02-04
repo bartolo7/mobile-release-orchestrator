@@ -8,18 +8,18 @@ import requests
 
 class AppStoreConnectClient:
     BASE_URL = 'https://appstoreconnect.appspot.com/v1'
-    APP_ID ='<Apple-assigned APP Store identifier located in APP Information in App Store Connect>'
-    RELEASE_NOTES = {'en-GB': '','sv': ''}
+    APP_ID = '<Apple-assigned APP Store identifier located in APP Information in App Store Connect>'
+    RELEASE_NOTES = {'en-GB': '', 'sv': ''}
 
     def __init__(self):
         self.session = requests.Session()
         self.session.headers.update({
-            'Authorization': f'Bearer {self._generate_jwt()}',
+            'Authorization': f'Bearer {self._generate_jwt}',
             'Content-Type': 'application/json'
         })
 
     @staticmethod
-    def _generate_jwt(self) -> str:
+    def _generate_jwt() -> str:
         """
         Generates a JWT token for App Store Connect.
         """
@@ -66,7 +66,6 @@ class AppStoreConnectClient:
         except requests.RequestException as error:
             raise ValueError(f'Error getting App Store Versions: {error}')
 
-
     def create_version(self, version, release_type):
         """
         Creates a version on App Store Connect
@@ -77,16 +76,16 @@ class AppStoreConnectClient:
         url = f'{self.BASE_URL}/appStoreVersions'
 
         data = {
-            'data':{
+            'data': {
                 'type': 'appStoreVersion',
-                'attributes':{
+                'attributes': {
                     'platform': 'IOS',
                     'versionString': version,
                     'releaseType': release_type
                 },
-                'relationships':{
-                    'app':{
-                        'data':{
+                'relationships': {
+                    'app': {
+                        'data': {
                             'id': self.APP_ID,
                             'type': 'apps'
                         }
@@ -108,12 +107,12 @@ class AppStoreConnectClient:
         """
         url = f'{self.BASE_URL}/appStoreVersions/{version_id}'
         data = {
-            'data':{
+            'data': {
                 'id': version_id,
                 'type': 'appStoreVersions',
                 'relationships': {
-                    'build':{
-                        'data':{
+                    'build': {
+                        'data': {
                             'id': build_id,
                             'type': 'builds'
                         }
@@ -193,14 +192,14 @@ class AppStoreConnectClient:
         Creates a phased release plan for the app version
         """
         data = {
-            'data':{
+            'data': {
                 'type': 'appStoreVersionPhasedRelease',
-                'attributes':{
+                'attributes': {
                     'phasedReleaseState': 'INACTIVE'
                 },
-                'relationships':{
-                    'appStoreVersion':{
-                        'data':{
+                'relationships': {
+                    'appStoreVersion': {
+                        'data': {
                             'id': version_id,
                             'type': 'appStoreVersions'
                         }
@@ -219,17 +218,16 @@ class AppStoreConnectClient:
         except requests.RequestException as error:
             raise ValueError(f'Error creating a new phased release version: {error}')
 
-
     def update_localization_whats_new(self, loc_id, whats_new_text):
         """
         Update Localization Instances for the App versoin
         :param loc_id: the id of the localization instance
         """
         data = {
-            'data':{
+            'data': {
                 'id': loc_id,
                 'type': 'appStoreVersionLocalizations',
-                'attributes':{
+                'attributes': {
                     'whatsNew': whats_new_text
                 }
             }
@@ -250,14 +248,14 @@ class AppStoreConnectClient:
         Submits the App for Review
         """
         data = {
-            'data':{
+            'data': {
                 'type': 'reviewSubmission',
-                'attributes':{
+                'attributes': {
                     'platform': 'IOS',
                 },
-                'relationships':{
-                    'app':{
-                        'id':self.APP_ID,
+                'relationships': {
+                    'app': {
+                        'id': self.APP_ID,
                         'type': 'apps'
                     }
                 }
@@ -280,12 +278,11 @@ class AppStoreConnectClient:
         """
         try:
             response = self.session.get(
-                f'{self.BASE_URL}/reviewSubmissions?filter[app]={self.APP_ID})
+                f'{self.BASE_URL}/reviewSubmissions?filter[app]={self.APP_ID}')
             response.raise_for_status()
             return response.json()
         except requests.RequestException as error:
             raise ValueError(f'Error getting list of reviews for the App: {error}')
-
 
     def add_app_version_for_review(self, review_id, version_id):
         """
@@ -294,17 +291,17 @@ class AppStoreConnectClient:
         :param version_id
         """
         data = {
-            'data':{
+            'data': {
                 'type': 'reviewSubmissionItems',
-                'relationships':{
-                    'appStoreVersion':{
-                        'data':{
+                'relationships': {
+                    'appStoreVersion': {
+                        'data': {
                             'id': version_id,
                             'type': 'appStoreVersions'
                         }
                     },
-                    'reviewSubmission':{
-                        'data':{
+                    'reviewSubmission': {
+                        'data': {
                             'id': review_id,
                             'type': 'reviewSubmissions'
                         }
@@ -328,10 +325,10 @@ class AppStoreConnectClient:
         Adds the App Store Version for review
         """
         data = {
-            'data':{
+            'data': {
                 'id': review_id,
                 'type': 'reviewSubmissions',
-                'attributes':{
+                'attributes': {
                     'submitted': True
                 }
             }
@@ -341,12 +338,10 @@ class AppStoreConnectClient:
             response = self.session.patch(
                 f'{self.BASE_URL}/reviewSubmissions/{review_id}',
                 data=json.dumps(data))
-            )
             response.raise_for_status()
             return response.json()
         except requests.RequestException as error:
             raise ValueError(f'Error submitting app for review: {error}')
-
 
     def get_app_status(self, version_id):
         """
@@ -366,11 +361,11 @@ class AppStoreConnectClient:
         Release the App version to production
         """
         data = {
-            'data':{
+            'data': {
                 'type': 'appStoreVersionReleaseRequests',
-                'relationships':{
-                    'appStoreVersion':{
-                        'data':{
+                'relationships': {
+                    'appStoreVersion': {
+                        'data': {
                             'type': 'appStoreVersions',
                             'id': version_id
                         }
