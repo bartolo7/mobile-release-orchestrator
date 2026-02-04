@@ -67,9 +67,10 @@ class AppStoreConnectClient:
             raise ValueError(f'Error getting App Store Versions: {error}')
 
 
-    def create_version(self, version):
+    def create_version(self, version, release_type):
         """
         Creates a version on App Store Connect
+        :param release_type:
         :param version: the version number
         :return: response from api
         """
@@ -81,7 +82,7 @@ class AppStoreConnectClient:
                 'attributes':{
                     'platform': 'IOS',
                     'versionString': version,
-                    'releaseType': 'MANUAL'
+                    'releaseType': release_type
                 },
                 'relationships':{
                     'app':{
@@ -123,8 +124,7 @@ class AppStoreConnectClient:
 
         if version_number:
             data['data']['attributes'] = {
-                'versionString': version_number,
-                'releaseType': 'MANUAL'
+                'versionString': version_number
             }
 
         try:
@@ -389,3 +389,15 @@ class AppStoreConnectClient:
             return response.json()
         except requests.RequestException as error:
             raise ValueError(f'Error releasing app version to production: {version_id}')
+
+    def ensure_phased_release_for_version(self, version_id: str) -> str:
+        """
+        Ensure this appStoreVersion has phased release enabled
+        Returns: "EXISTS" or "CREATED"
+        """
+        response = self.create_phased_release_version(version_id)
+        if response.status_code == 409:
+            print(f"App Store Version {version_id} phased release already exists")
+            return "EXISTS"
+        response.raise_for_status()
+        return "CREATED"
