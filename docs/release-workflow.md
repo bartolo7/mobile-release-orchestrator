@@ -34,7 +34,7 @@ flowchart TB
     M2 --> M3[Approval Step<br/>Verify Regression]
     M3 --> M4[Generate Test Report]
     M4 --> M5[Attach Test Report to Jira Release<br/>to Jira Release]
-    M5 --> M6[iOS Production Roll-out<br/>7 Days]
+    M5 --> M6[AppStoreConnect<br/>Relase version to Prod 7 Days roll-out]
 
     %% ===== MONDAY ANDROID RELEASE =====
     A6 --> N1[CI Monday Trigger<br/>Android Release Workflow]
