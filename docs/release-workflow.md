@@ -2,50 +2,48 @@
 
 
 ```mermaid
-%%{init: {'flowchart': {'nodeSpacing': 50, 'rankSpacing': 70}}}%%
 flowchart TB
+    %% ===== CI CUT-OFF =====
+    A[CI: CircleCI / Jenkins<br/>Cut-off Trigger<br/>Friday Morning] --> B[JIRA<br/>Create iOS & Android Release Candidates]
+    B --> C[Slack #app-release<br/>Notify Marketing, Ops, Eng]
 
-subgraph CI["CI Cut-off (Friday Morning)"]
-    A[CI Trigger] --> B[Jira<br/>Create Release Candidates]
-    B --> C[Slack #app-release<br/>Notify Stakeholders]
-end
+    %% ===== PARALLEL BUILDS =====
+    C --> D1[iOS Build]
+    C --> D2[Android Build]
 
-subgraph IOS["iOS Release Candidate"]
-    D1[Fetch Latest Build]
-    D1 --> D2[Jira Version<br/>2.YYYYWW.0]
-    D2 --> D3[Automation Tests]
-    D3 --> D4[App Store Connect<br/>Draft]
-    D4 --> D5[Marketing Updates]
-    D5 --> D6[Submit for Review]
-end
+    %% ===== iOS RC =====
+    D1 --> I1[Fetch Latest Successful iOS Build]
+    I1 --> I2[Create Jira Version<br/>2.YYYYWW.0]
+    I2 --> I3[Trigger Automation Regression Tests]
+    I3 --> I4[App Store Connect<br/>Create Draft Version]
+    I4 --> I5[Marketing Updates<br/>Screenshots & Metadata]
+    I5 --> I6[Submit for Review<br/>24h Weekend Review]
+    I6 --> I7[Slack Notification<br/>iOS RC Submitted]
 
-subgraph ANDROID["Android Release Candidate"]
-    E1[Fetch Latest Build]
-    E1 --> E2[Jira Version<br/>3.YYYYWW.0]
-    E2 --> E3[Automation Tests]
-    E3 --> E4[Google Play<br/>Draft]
-    E4 --> E5[Marketing Updates]
-    E5 --> E6[Submit for Review]
-end
+    %% ===== Android RC =====
+    D2 --> A1[Fetch Latest Successful Android Build]
+    A1 --> A2[Create Jira Version<br/>3.YYYYWW.0]
+    A2 --> A3[Trigger Automation Regression Tests]
+    A3 --> A4[Google Play<br/>Create Draft Version]
+    A4 --> A5[Marketing Updates<br/>Screenshots & Metadata]
+    A5 --> A6[Submit for Review<br/>24h Weekend Review]
+    A6 --> A7[Slack Notification<br/>Android RC Submitted]
 
-subgraph MONDAY_IOS["Monday iOS Release"]
-    F1[Verify Readiness]
-    F1 --> F2[Approval & Regression]
-    F2 --> F3[Test Report]
-    F3 --> F4[Attach to Jira]
-    F4 --> F5[7-Day Rollout]
-end
+    %% ===== MONDAY IOS RELEASE =====
+    I6 --> M1[CI Monday Trigger<br/>iOS Release Workflow]
+    M1 --> M2[Verify iOS Ready for Release]
+    M2 --> M3[Approval Step<br/>Verify Regression]
+    M3 --> M4[Generate Test Report]
+    M4 --> M5[Attach Test Report<br/>to Jira Release]
+    M5 --> M6[iOS Production Rollout<br/>7 Days]
 
-subgraph MONDAY_ANDROID["Monday Android Release"]
-    G1[Verify Readiness]
-    G1 --> G2[Approval & Regression]
-    G2 --> G3[Test Report]
-    G3 --> G4[Attach to Jira]
-    G4 --> G5[10% → 25% → 50% → 75% → 100%]
-end
+    %% ===== MONDAY ANDROID RELEASE =====
+    A6 --> N1[CI Monday Trigger<br/>Android Release Workflow]
+    N1 --> N2[Verify Android Ready for Release]
+    N2 --> N3[Approval Step<br/>Verify Regression]
+    N3 --> N4[Generate Test Report]
+    N4 --> N5[Attach Test Report<br/>to Jira Release]
+    N5 --> N6[Google Play Staged Rollout via API]
+    N6 --> N7[10% → 25% → 50% → 75% → 100%]
 
-C --> D1
-C --> E1
-D6 --> F1
-E6 --> G1
 ...
