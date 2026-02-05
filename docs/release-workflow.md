@@ -4,12 +4,11 @@
 ```mermaid
 flowchart TB
     %% ===== CI CUT-OFF =====
-    A[CI: CircleCI / Jenkins<br/>Cut-off Trigger<br/>Friday Morning] --> B[JIRA<br/>Create iOS & Android Release Candidates]
-    B --> C[Slack #app-release<br/>Notify Marketing, Ops, Eng]
-
+    A[Continues Integration <br/>Cut-off Trigger<br/>Friday Morning] --> B[JIRA<br/>Create iOS & Android Release Candidates]
+  
     %% ===== PARALLEL BUILDS =====
-    C --> D1[iOS Build]
-    C --> D2[Android Build]
+    B --> D1[iOS Build]
+    B --> D2[Android Build]
 
     %% ===== iOS RC =====
     D1 --> I1[Fetch Latest Successful iOS Build]
@@ -45,5 +44,4 @@ flowchart TB
     N4 --> N5[Attach Test Report<br/>to Jira Release]
     N5 --> N6[Google Play Staged Rollout via API]
     N6 --> N7[10% → 25% → 50% → 75% → 100%]
-
 ...
