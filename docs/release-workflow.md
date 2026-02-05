@@ -44,4 +44,3 @@ flowchart TB
     N4 --> N5[Attach Test Report to Jira Release<br/>to Jira Release]
     N5 --> N6[Google Play Phase Roll-out via API]
     N6 --> N7[Update the roll-out automtically from 10% → 25% → 50% → 75% → 100%]
-...
