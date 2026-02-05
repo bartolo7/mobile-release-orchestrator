@@ -11,7 +11,7 @@ flowchart TB
     B --> D2[Android Build]
 
     %% ===== iOS RC =====
-    D1 --> I1[Fetch Latest Successful iOS Build]
+    D1 --> I1[Fetch Latest Successful iOS Build in CI]
     I1 --> I2[Create Jira Version<br/>2.YYYYWW.0]
     I2 --> I3[Trigger Automation Regression Tests]
     I3 --> I4[AppStoreConnect<br/>Create Draft Version]
@@ -20,7 +20,7 @@ flowchart TB
     I6 --> I7[Slack Notification to Engineering<br/>iOS Version Submitted]
 
     %% ===== Android RC =====
-    D2 --> A1[Fetch Latest Successful Android Build]
+    D2 --> A1[Fetch Latest Successful Android Build in CI]
     A1 --> A2[Create Jira Version<br/>3.YYYYWW.0]
     A2 --> A3[Trigger Automation Regression Tests]
     A3 --> A4[Google Play<br/>Create Draft Version]
