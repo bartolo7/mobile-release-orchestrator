@@ -1,5 +1,7 @@
 ## Mobile App Release Workflow
 
+
+```mermaid
 %%{init: {'flowchart': {'nodeSpacing': 50, 'rankSpacing': 70}}}%%
 flowchart TB
 
@@ -46,4 +48,4 @@ C --> D1
 C --> E1
 D6 --> F1
 E6 --> G1
-
+...
