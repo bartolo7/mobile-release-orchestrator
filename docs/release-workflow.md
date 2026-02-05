@@ -16,7 +16,7 @@ flowchart TB
     I2 --> I3[Trigger Automation Regression Tests]
     I3 --> I4[AppStoreConnect<br/>Create Draft Version]
     I4 --> I5[Inform Marketing<br/>Screenshots & Metadata]
-    I5 --> I6[AppStoreConnect Submit for Review<br/>24h Weekend Review]
+    I5 --> I6[AppStoreConnect<br/> Submit for Review 24h]
     I6 --> I7[Slack Notification to Engineering<br/>iOS Version Submitted]
 
     %% ===== Android RC =====
@@ -25,7 +25,7 @@ flowchart TB
     A2 --> A3[Trigger Automation Regression Tests]
     A3 --> A4[Google Play<br/>Create Draft Version]
     A4 --> A5[Inform Marketing <br/>Screenshots & Metadata]
-    A5 --> A6[Google Play Submit for Review<br/>24h Weekend Review]
+    A5 --> A6[Google Play<br/>Submit for Review]
     A6 --> A7[Slack Notification Engineering<br/>Android Version Submitted]
 
     %% ===== MONDAY IOS RELEASE =====
