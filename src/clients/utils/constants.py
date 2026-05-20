@@ -1,0 +1,1 @@
+MOBILE_PLATFORMS = ["ios", "android"]

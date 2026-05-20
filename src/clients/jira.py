@@ -1,10 +1,9 @@
 import json
 import os
 from datetime import datetime
-from enum import Enum
 import requests
 from requests.auth import HTTPBasicAuth
-from .circleci import CircleCI
+from src.clients.circleci import CircleCI
 
 
 class Jira:
