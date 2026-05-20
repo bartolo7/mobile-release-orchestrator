@@ -47,7 +47,7 @@ def create_app_version(platform: str) -> dict:
     year = iso_year
     week = week_number
 
-    major = 5 if platform.lower() == "android" else 4
+    major = 5 if platform == "android" else 4
     patch = 0
 
 
