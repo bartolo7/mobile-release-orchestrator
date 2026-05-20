@@ -2,9 +2,9 @@ import argparse
 import sys
 
 from src.clients.jira import Jira
-from src.clients.utils.logging_config import setup_logger
-from src.clients.utils.versions import create_app_version
-from src.clients.utils.constants import MOBILE_PLATFORMS
+from src.utils.logging_config import setup_logger
+from src.utils.versions import create_app_version
+from src.utils.constants import MOBILE_PLATFORMS
 
 logger = setup_logger(__name__)
 
