@@ -41,7 +41,7 @@ Examples:
         4.26034.1
 """
 
-def create_app_version(platform: str) -> dict:
+def create_app_version(platform: str) -> str:
     ct = datetime.now()
     iso_year, week_number, _ = ct.isocalendar()
     year = iso_year
@@ -65,13 +65,5 @@ def create_app_version(platform: str) -> dict:
 
     version = f"{major}.{str(year)[-2:]}{week_padding}{day_index}.{patch}"
 
-    # Monday of current ISO week
-    week_start = datetime.strptime(f"{year}-{week}-1", "%G-%V-%u")
-    start_date = week_start + timedelta(days=3)   # Thursday
-    release_date = week_start + timedelta(days=7) # Next Monday
-
-    return {
-        "ver": version,
-        "start_date": start_date,
-        "release_date": release_date,
-    }
+    return version
+       
