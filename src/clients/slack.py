@@ -34,6 +34,7 @@ class SlackClient:
         kwargs = {
             "channel": channel,
             "blocks": blocks,
+            "text": "New notification from Release Orchestrator"
         }
 
         if thread_ts:
