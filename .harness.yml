@@ -1,0 +1,50 @@
+pipeline:
+  name: iOS Simulator Control
+  identifier: ios_simulator_control
+  projectIdentifier: mobilereleaseorchestrator
+  orgIdentifier: default
+  stages:
+    - stage:
+        name: manage_simulator
+        identifier: manage_simulator
+        type: CI
+        spec:
+          cloneCodebase: false # No code is needed for this task
+          platform:
+            os: MacOS # A macOS runner is mandatory for this to work
+            arch: Arm64 # Use 'Amd64' for Intel Macs
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              # This step starts (boots) the specified simulator
+              - step:
+                  type: Run
+                  name: Start Simulator
+                  identifier: start_simulator
+                  spec:
+                    shell: Sh
+                    command: |-
+                      # You can set a specific device name here
+                      SIMULATOR_NAME="iPhone 15" 
+                      echo "Booting simulator: $SIMULATOR_NAME"
+                      # Open the Simulator app first to ensure it's ready
+                      open -a Simulator
+                      # Boot the simulator by its name
+                      xcrun simctl boot "$SIMULATOR_NAME"
+                      # Optional: Verify it's running
+                      xcrun simctl list devices | grep "$SIMULATOR_NAME" | grep "Booted"
+
+              # This step shuts down any running simulators
+              - step:
+                  type: Run
+                  name: Stop Simulator
+                  identifier: stop_simulator
+                  spec:
+                    shell: Sh
+                    command: |-
+                      echo "Shutting down all simulators..."
+                      # Shut down all booted simulators
+                      xcrun simctl shutdown all
+                      echo "All simulators shut down."
